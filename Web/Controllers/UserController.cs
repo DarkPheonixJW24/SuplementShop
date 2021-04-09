@@ -44,14 +44,14 @@
         public IActionResult GetSelf()
         {
             var loggedInUserId = User.GetLoggedInUserId();
-
+            var role = User.GetUserRole();
             if (loggedInUserId == null)
             {
                 return Unauthorized();
             }
             else
             {
-                return Ok("You are logged in");
+                return Ok(role);
             }
         }
     }

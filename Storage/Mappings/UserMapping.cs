@@ -16,6 +16,7 @@
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Password).IsRequired();
+            builder.Property(x => x.Role).IsRequired();
 
             builder.HasIndex(x => x.Email).IsUnique();
         }

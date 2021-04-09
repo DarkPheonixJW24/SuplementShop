@@ -10,14 +10,17 @@
 
         public string Password { get; private set; }
 
-        public static User Create(int id, string email, string name, string password)
+        public Role Role { get; private set; }
+
+        public static User Create(int id, string email, string name, string password, Role role)
         {
             return new User
             {
                 Id = id,
                 Email = email,
                 Name = name,
-                Password = password
+                Password = password,
+                Role = role
             };
         }
     }

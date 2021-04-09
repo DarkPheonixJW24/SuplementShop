@@ -1,5 +1,7 @@
 ﻿namespace SuplementShop.Web.Extensions
 {
+    using SuplementShop.Application.Entities;
+    using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -17,6 +19,20 @@
             else
             {
                 return int.Parse(id);
+            }
+        }
+
+        public static Role? GetUserRole(this ClaimsPrincipal user)
+        {
+            var role = user.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Nonce)?.Value;
+
+            if (role == null)
+            {
+                return null;
+            }
+            else
+            {
+                return Enum.Parse<Role>(role);
             }
         }
     }
