@@ -4,10 +4,12 @@
     using Microsoft.AspNetCore.Mvc;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Requests;
+    using SuplementShop.Web.Extensions;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
     using System.Threading.Tasks;
 
     [ApiController]
-    [AllowAnonymous]
     [Route("user")]
     public class UserController : ControllerBase
     {
@@ -19,6 +21,7 @@
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
         {
@@ -28,6 +31,7 @@
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("log-in")]
         public async Task<IActionResult> SignIn([FromBody] LogInRequest request)
         {
@@ -36,6 +40,19 @@
             return Ok(result);
         }
 
+        [HttpGet]
+        public IActionResult GetSelf()
+        {
+            var loggedInUserId = User.GetLoggedInUserId();
 
+            if (loggedInUserId == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                return Ok("You are logged in");
+            }
+        }
     }
 }

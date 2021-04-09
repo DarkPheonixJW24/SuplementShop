@@ -60,6 +60,7 @@
             var claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, userInfo.Name),
                 new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
+                new Claim(JwtRegisteredClaimNames.Sid, userInfo.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
