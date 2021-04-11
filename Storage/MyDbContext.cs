@@ -13,6 +13,7 @@
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UserMapping());
+            modelBuilder.ApplyConfiguration(new ProductMapping());
         }
     }
 }

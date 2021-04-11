@@ -5,8 +5,6 @@
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Requests;
     using SuplementShop.Web.Extensions;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Linq;
     using System.Threading.Tasks;
 
     [ApiController]
