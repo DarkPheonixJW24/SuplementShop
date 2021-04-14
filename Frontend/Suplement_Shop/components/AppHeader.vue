@@ -6,11 +6,11 @@
                 <nuxt-link to='/'> Home </nuxt-link>
             </li>
 <li>
-                <nuxt-link to='/'> Catalog </nuxt-link>
+                <nuxt-link to='/catalog'> Catalog </nuxt-link>
             </li>
 
 <li>
-                <nuxt-link to='/'> aBOUT </nuxt-link>
+                <nuxt-link to='/about'> about </nuxt-link>
             </li>
 
         </ul>

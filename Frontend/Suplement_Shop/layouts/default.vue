@@ -1,9 +1,9 @@
 <template>
- <DIV>
+ <div>
    <AppHeader />
 
    <nuxt />
- </DIV>
+ </div>
 </template>
 
 <script>
