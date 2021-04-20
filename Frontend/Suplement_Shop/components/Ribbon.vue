@@ -39,7 +39,7 @@ export default {
   content: attr(title);
   padding: 0.5rem;
   width: 10rem;
-  background: #007bff;
+  background: #0169d8;
   text-align: center;
   font-family: "Roboto", sans-serif;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
