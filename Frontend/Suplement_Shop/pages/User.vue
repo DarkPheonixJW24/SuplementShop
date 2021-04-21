@@ -1,17 +1,17 @@
 <template>
-  <b-container>
-    <b-card class="cart-card" no-body>
+  <v-container>
+    <v-card class="cart-card" no-body>
       <template v-slot:header>
-        <h6 class="mb-0">History</h6>
+        <h6 class="mv-0">History</h6>
       </template>
-      <b-list-group flush>
+      <v-list-group flush>
         <template v-if="hasItems">
           <CartListItem v-for="cart in carts" :key="cart.id" :cart="cart"></CartListItem>
         </template>
-        <b-list-group-item v-else href="#">No items</b-list-group-item>
-      </b-list-group>
-    </b-card>
-  </b-container>
+        <v-list-group-item v-else href="#">No items</v-list-group-item>
+      </v-list-group>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
     CartListItem
   },
   mounted() {
-    this.$store.dispatch("loadCartHistory", {
+    this.$store.dispatch("userState/loadCartHistory", {
       userId: this.$store.state.userState.user.id
     });
   },

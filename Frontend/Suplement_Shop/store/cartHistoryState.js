@@ -1,8 +1,3 @@
-import axios from "axios";
-
-const BASE_URL =
-  "https://0i691shtxb.execute-api.us-east-1.amazonaws.com/prod/api";
-
 export default {
   state: () => ({
       carts: [],
@@ -29,8 +24,8 @@ export default {
   actions: {
     loadCartHistory({ commit }, { userId }) {
         commit("SET_CARTS_LOADING");
-        axios
-          .get(`${BASE_URL}/cart/list/${userId}`)
+        this.$axios
+          .get(`cart/list/${userId}`)
           .then((r) => r.data)
           .then((carts) => commit("SET_CARTS", carts))
           .catch((error) => commit("SET_CART_ERRORS", error));

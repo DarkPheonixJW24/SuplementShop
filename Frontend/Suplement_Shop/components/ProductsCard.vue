@@ -1,20 +1,20 @@
 <template>
-  <b-card no-body class="product-card">
-    <b-row no-gutters md="6">
-      <b-card-img :src="product.imageUrls[0]" alt="Image" class="rounded-0"></b-card-img>
-    </b-row>
-    <b-row no-gutters md="6">
-      <b-card-body :title="product.name">
-        <b-link :to="'/manufacturer/' + product.manufacturer">{{product.manufacturer}}</b-link>
-        <b-card-text class="product-description">{{product.description.slice(0, 150)}}...</b-card-text>
-      </b-card-body>
-    </b-row>
+  <v-card no-body class="product-card">
+    <v-row no-gutters md="6">
+      <v-card-img :src="product.imageUrls[0]" alt="Image" class="rounded-0"></v-card-img>
+    </v-row>
+    <v-row no-gutters md="6">
+      <v-card-body :title="product.name">
+        <v-link :to="'/manufacturer/' + product.manufacturer">{{product.manufacturer}}</v-link>
+        <v-card-text class="product-description">{{product.description.slice(0, 150)}}...</v-card-text>
+      </v-card-body>
+    </v-row>
     <Ribbon class="product-ribon" :text="product.price + ' ден.'"></Ribbon>
     <template v-slot:footer>
-      <b-button :to="'/product/' + product.id" variant="primary" style="margin-right: 1rem;">Details</b-button>
-      <b-button @click="addToCart()" variant="primary">Add to cart</b-button>
+      <v-button :to="'/product/' + product.id" variant="primary" style="margin-right: 1rem;">Details</v-button>
+      <v-button @click="addToCart()" variant="primary">Add to cart</v-button>
     </template>
-  </b-card>
+  </v-card>
 </template>
 
 <script>

@@ -4,7 +4,7 @@ namespace SuplementShop.Application.Requests
 {
     public class SignUpRequest
     {
-        public string Name { get; set; }
+        public string FullName { get; set; }
 
 
         [Required]

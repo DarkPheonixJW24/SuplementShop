@@ -1,8 +1,3 @@
-import axios from "axios";
-
-const BASE_URL =
-  "https://0i691shtxb.execute-api.us-east-1.amazonaws.com/prod/api";
-
 export default {
   state: () => ({
     products: [],
@@ -42,8 +37,8 @@ export default {
     loadProducts({ commit, state }, category) {
       if (state.category !== category) {
         commit("SET_PRODUCTS_LOADING");
-        axios
-          .get(`${BASE_URL}/category/${category}`)
+        this.$axios
+          .get(`category/${category}`)
           .then((r) => r.data)
           .then((products) => commit("SET_PRODUCTS", { products, category }))
           .catch((error) => commit("SET_PRODUCTS_ERROR", error));
@@ -52,8 +47,8 @@ export default {
     loadProductsByMannufacturer({ commit, state }, mannufacturer) {
       if (state.mannufacturer !== mannufacturer) {
         commit("SET_PRODUCTS_LOADING");
-        axios
-          .get(`${BASE_URL}/product/mannufacturer/${mannufacturer}`)
+        this.$axios
+          .get(`product/mannufacturer/${mannufacturer}`)
           .then((r) => r.data)
           .then((products) =>
             commit("SET_PRODUCTS", { products, mannufacturer })
@@ -64,8 +59,8 @@ export default {
     searchProducts({ commit, state }, searchTerm) {
       if (state.searchTerm !== searchTerm) {
         commit("SET_PRODUCTS_LOADING");
-        axios
-          .get(`${BASE_URL}/product/search/${searchTerm}`)
+        this.$axios
+          .get(`product/search/${searchTerm}`)
           .then((r) => r.data)
           .then((products) => commit("SET_PRODUCTS", { products, searchTerm }))
           .catch((error) => commit("SET_PRODUCTS_ERROR", error));

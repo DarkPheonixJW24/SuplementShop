@@ -1,8 +1,3 @@
-import axios from "axios";
-
-const BASE_URL =
-  "https://0i691shtxb.execute-api.us-east-1.amazonaws.com/prod/api";
-
 export default {
   state: () => ({
     categories: [],
@@ -29,8 +24,8 @@ export default {
   actions: {
     loadCategories({ commit }) {
       commit("SET_CATEGORIES_LOADING");
-      axios
-        .get(`${BASE_URL}/category`)
+      this.$axios
+        .get(`category`)
         .then((r) => r.data)
         .then((categories) => commit("SET_CATEGORIES", categories))
         .catch((error) => commit("SET_CATEGORIES_ERROR", error));

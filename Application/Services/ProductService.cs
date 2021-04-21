@@ -46,7 +46,7 @@
                 Category = request.Category,
                 Price = request.Price,
                 Stock = request.Stock,
-                Images = request.Images
+                ImagesUrls = request.Images
             };
 
             await repo.CreateProduct(product);
@@ -78,7 +78,7 @@
             product.Category = request.Category;
             product.Price = request.Price;
             product.Stock = request.Stock;
-            product.Images = request.Images;
+            product.ImagesUrls = request.Images;
 
             await repo.UpdateProduct(id, product);
 
@@ -88,6 +88,21 @@
         public async Task<bool> DeleteProduct(int id)
         {
             return await repo.DeleteProduct(id);
+        }
+
+        public Task<IEnumerable<Product>> GetProductsForCategory(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Product>> GetAllByMannufacturer(string mannufacturer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Product>> SearchProducts(string searchTerm)
+        {
+            throw new NotImplementedException();
         }
     }
 }

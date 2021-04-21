@@ -1,8 +1,3 @@
-import axios from "axios";
-
-const BASE_URL =
-  "https://0i691shtxb.execute-api.us-east-1.amazonaws.com/prod/api";
-
 export default {
   state: () => ({
     product: undefined,
@@ -35,8 +30,8 @@ export default {
         commit("SET_PRODUCT_STATE", maybeProduct);
         return;
       }
-      axios
-        .get(`${BASE_URL}/product/${productId}`)
+      this.$axios
+        .get(`product/${productId}`)
         .then((r) => r.data)
         .then((product) => commit("SET_PRODUCT_STATE", product))
         .catch((error) => commit("SET_PRODUCT_ERROR", error));

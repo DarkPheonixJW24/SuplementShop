@@ -1,10 +1,10 @@
 <template>
-  <b-container>
-    <b-card class="cart-card" no-body>
+  <v-container>
+    <v-card class="cart-card" no-body>
       <template v-slot:header>
-        <h6 class="mb-0">Cart</h6>
+        <h6 class="mv-0">Cart</h6>
       </template>
-      <b-list-group flush>
+      <v-list-group flush>
         <template v-if="hasItems">
           <CartItem
             v-for="item in cartItems"
@@ -15,20 +15,20 @@
             @remove="removeCartItem(item.productId)"
           ></CartItem>
         </template>
-        <b-list-group-item v-else href="#">No items</b-list-group-item>
-      </b-list-group>
+        <v-list-group-item v-else href="#">No items</v-list-group-item>
+      </v-list-group>
       <template v-slot:footer>
-        <b-row>
-          <b-col>
+        <v-row>
+          <v-col>
             <span>Total price: {{totalPrice}} ден.</span>
-          </b-col>
-          <b-col></b-col>
-          <b-button class="pad" variant="danger" @click="clearCart()">Clear</b-button>
-          <b-button class="pad" variant="primary" @click="buyCart()">Buy</b-button>
-        </b-row>
+          </v-col>
+          <v-col></v-col>
+          <v-button class="pad" variant="danger" @click="clearCart()">Clear</v-button>
+          <v-button class="pad" variant="primary" @click="buyCart()">Buy</v-button>
+        </v-row>
       </template>
-    </b-card>
-  </b-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -62,18 +62,18 @@ export default {
   methods: {
     clearCart() {
       if (this.cart)
-        this.$store.dispatch("clearCart", { cartId: this.cart.id });
+        this.$store.dispatch("cartState/clearCart", { cartId: this.cart.id });
     },
     buyCart() {
       if (this.user && this.cart)
-        this.$store.dispatch("buyCart", {
+        this.$store.dispatch("cartState/buyCart", {
           cartId: this.cart.id,
           userId: this.user.id
         });
     },
     incrementCartItem(productId) {
       if (this.cart) {
-        this.$store.dispatch("incrementCartItem", {
+        this.$store.dispatch("cartState/incrementCartItem", {
           cartId: this.cart.id,
           productId: productId
         });
@@ -81,7 +81,7 @@ export default {
     },
     decrementCartItem(productId) {
       if (this.cart) {
-        this.$store.dispatch("decrementCartItem", {
+        this.$store.dispatch("cartState/decrementCartItem", {
           cartId: this.cart.id,
           productId: productId
         });
@@ -89,7 +89,7 @@ export default {
     },
     removeCartItem(productId) {
       if (this.cart) {
-        this.$store.dispatch("removeCartItem", {
+        this.$store.dispatch("cartState/removeCartItem", {
           cartId: this.cart.id,
           productId: productId
         });

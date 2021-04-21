@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
 
     [ApiController]
-    [Route("user")]
+    [Route("api/user")]
     public class UserController : ControllerBase
     {
         private readonly IUserService UserService;

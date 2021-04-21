@@ -1,10 +1,10 @@
 <template>
   <div class="product-container">
-    <b-container>
-      <b-card no-body class="product-card" v-if="!loading && !error">
-        <b-row no-gutters>
-          <b-col>
-            <b-carousel
+    <v-container>
+      <v-card no-body class="product-card" v-if="!loading && !error">
+        <v-row no-gutters>
+          <v-col>
+            <v-carousel
               id="carousel-1"
               :interval="4000"
               controls
@@ -14,30 +14,30 @@
               img-height="480"
               style="text-shadow: 1px 1px 2px #333;"
             >
-              <b-carousel-slide v-for="image in product.imageUrls" :key="image" :img-src="image"></b-carousel-slide>
+              <v-carousel-slide v-for="image in product.imageUrls" :key="image" :img-src="image"></v-carousel-slide>
 
-              <b-carousel-slide
+              <v-carousel-slide
                 v-if="!product || !product.imageUrls.length"
                 caption="Blank Image"
                 img-blank
                 img-alt="Blank image"
-              ></b-carousel-slide>
-            </b-carousel>
-          </b-col>
-          <b-col>
-            <b-card-body :title="product.name">
-              <b-link :to="'/manufacturer/' + product.manufacturer">{{product.manufacturer}}</b-link>
-              <b-card-text class="product-description">{{product.description}}</b-card-text>
-            </b-card-body>
-          </b-col>
-        </b-row>
+              ></v-carousel-slide>
+            </v-carousel>
+          </v-col>
+          <v-col>
+            <v-card-body :title="product.name">
+              <v-link :to="'/manufacturer/' + product.manufacturer">{{product.manufacturer}}</v-link>
+              <v-card-text class="product-description">{{product.description}}</v-card-text>
+            </v-card-body>
+          </v-col>
+        </v-row>
         <Ribbon class="product-ribon" :text="product.price + ' ден.'"></Ribbon>
         <template v-slot:footer>
-          <b-button @click="addToCart(product)" variant="primary">Add to cart</b-button>
+          <v-button @click="addToCart(product)" variant="primary">Add to cart</v-button>
         </template>
-      </b-card>
+      </v-card>
       <div v-if="loading">Loading</div>
-    </b-container>
+    </v-container>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
   },
   name: "Product",
   mounted() {
-    this.$store.dispatch("loadProduct", this.$route.params.id);
+    this.$store.dispatch("productState/loadProduct", this.$route.params.id);
   },
   computed: {
     productState() {
@@ -72,7 +72,7 @@ export default {
   methods: {
     addToCart(product) {
       if (this.cart) {
-        this.$store.dispatch("addCartItem", {
+        this.$store.dispatch("cartState/addCartItem", {
           cartId: this.cart.id,
           cartItem: {
             productId: product.id,

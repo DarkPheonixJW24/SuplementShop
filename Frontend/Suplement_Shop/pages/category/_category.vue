@@ -1,6 +1,8 @@
+
 <template>
-  <b-container class="products-container">
-    <h1>Search: {{ $route.params.searchTerm }}</h1>
+
+  <v-container class="products-container">
+    <h1>{{ $route.params.category }}</h1>
     <div class="products-grid">
       <ProductsCard
         v-for="product in products"
@@ -9,19 +11,20 @@
         @add-to-cart="addToCart(product)"
       ></ProductsCard>
     </div>
-  </b-container>
+  </v-container>
+
 </template>
 
 <script>
 import ProductsCard from "@/components/ProductsCard.vue";
 
 export default {
-  name: "Search",
+  name: "Category",
   components: {
     ProductsCard
   },
   mounted() {
-    this.$store.dispatch("searchProducts", this.$route.params.searchTerm);
+    this.$store.dispatch("productState/loadProducts", this.$route.params.category);
   },
   computed: {
     productsState() {
@@ -43,7 +46,7 @@ export default {
   methods: {
     addToCart(product) {
       if (this.cart) {
-        this.$store.dispatch("addCartItem", {
+        this.$store.dispatch("cartState/addCartItem", {
           cartId: this.cart.id,
           cartItem: {
             productId: product.id,
@@ -56,6 +59,7 @@ export default {
     }
   }
 };
+
 </script>
 
 <style lang="scss" scoped>

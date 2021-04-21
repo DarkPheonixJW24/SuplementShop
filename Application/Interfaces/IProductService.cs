@@ -9,6 +9,12 @@
     {
         Task<Product> GetProduct(int id);
 
+        Task<IEnumerable<Product>> GetProductsForCategory(string name);
+
+        Task<List<Product>> GetAllByMannufacturer(string mannufacturer);
+
+        Task<List<Product>> SearchProducts(string searchTerm);
+
         Task<ICollection<Product>> GetProducts();
 
         Task<string> CreateProduct(CreateProductRequest request);

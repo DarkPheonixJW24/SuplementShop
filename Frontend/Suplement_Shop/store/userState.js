@@ -1,8 +1,3 @@
-import axios from "axios";
-
-const BASE_URL =
-  "https://0i691shtxb.execute-api.us-east-1.amazonaws.com/prod/api";
-
 export default {
   state: () => ({
     user: undefined,
@@ -29,8 +24,8 @@ export default {
   actions: {
     logIn({ commit, dispatch }, { email, password }) {
       commit("SET_USER_LOADING");
-      axios
-        .post(`${BASE_URL}/user/log-in`, { email, password })
+      this.$axios
+        .post(`user/log-in`, { email, password })
         .then((r) => r.data)
         .then((user) => {
           commit("SET_USER", user);
@@ -40,8 +35,8 @@ export default {
     },
     register({ commit }, { email, password, fullName }) {
       commit("SET_USER_LOADING");
-      axios
-        .post(`${BASE_URL}/user/register`, { email, password, fullName })
+      this.$axios
+        .post(`user/register`, { email, password, fullName })
         .then((r) => r.data)
         .then((user) => {
           commit("SET_USER", user);

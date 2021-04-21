@@ -80,6 +80,8 @@ namespace SuplementShop.Web
                 endpoints.MapControllers();
             });
 
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             SetUpDb(app);
         }
 

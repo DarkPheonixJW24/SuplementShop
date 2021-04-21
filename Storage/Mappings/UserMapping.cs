@@ -13,7 +13,7 @@
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.FullName).IsRequired();
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Password).IsRequired();
             builder.Property(x => x.Role).IsRequired();

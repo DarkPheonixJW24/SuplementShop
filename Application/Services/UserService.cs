@@ -45,7 +45,7 @@
 
         public async Task<string> SignUpAsync(SignUpRequest request)
         {
-            User user = User.Create(default, request.Email, request.Name, request.Password, Role.User);
+            User user = User.Create(default, request.Email, request.FullName, request.Password, Role.User);
 
             await UserRepo.CreateUserAsync(user);
 
@@ -58,7 +58,7 @@
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.Name),
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.FullName),
                 new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
                 new Claim(JwtRegisteredClaimNames.Sid, userInfo.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Nonce, userInfo.Role.ToString()),

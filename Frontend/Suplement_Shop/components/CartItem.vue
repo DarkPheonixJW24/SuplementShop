@@ -1,13 +1,12 @@
 <template>
-    <b-leist-group-item class="d-flex justify-content-between allign-items-center">
-        <b-link :to="'/product/' + item.productId">{{ittem.productName}} - {{item.price}}ден.</b-link>
+    <v-list-group-item class="d-flex justify-content-between allign-items-center">
+        <v-link :to="'/product/' + item.productId">{{ittem.productName}} - {{item.price}}ден.</v-link>
         <div class="count">
-            <b-button side="sm" pill variant= "outline-secondary" @click="increment()">-</b-button>
+            <v-button side="sm" pill variant= "outline-secondary" @click="increment()">-</v-button>
             <span>{{item.count}}</span>
-            <b-button side="sm" pill variant= "outline-secondary" @click="decrement()">+</b-button>
+            <v-button side="sm" pill variant= "outline-secondary" @click="decrement()">+</v-button>
         </div>
-    </b-leist-group-item>
-
+    </v-list-group-item>
 </template>
 
 <script>

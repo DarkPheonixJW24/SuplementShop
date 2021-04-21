@@ -10,7 +10,7 @@
     using System.Threading.Tasks;
 
     [ApiController]
-    [Route("product")]
+    [Route("api/product")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService productService;
@@ -79,6 +79,20 @@
             await productService.DeleteProduct(id);
 
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("search/{searchTerm}")]
+        public async Task<List<Product>> Search(string searchTerm)
+        {
+            return await productService.SearchProducts(searchTerm);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("manufacturer/{manufacturer}")]
+        public async Task<List<Product>> GetAllByManufacturer(string mannufacturer)
+        {
+            return await productService.GetAllByMannufacturer(mannufacturer);
         }
     }
 }
