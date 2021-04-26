@@ -14,6 +14,8 @@
 
             modelBuilder.ApplyConfiguration(new UserMapping());
             modelBuilder.ApplyConfiguration(new ProductMapping());
+            modelBuilder.ApplyConfiguration(new CartMapping());
+            modelBuilder.ApplyConfiguration(new CartItemMapping());
         }
     }
 }

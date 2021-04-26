@@ -4,12 +4,18 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    private interface ICartRepo
+    public interface ICartRepo
     {
-        Task<Cart> GetCart(string id);
+        Task<Cart> GetCart(int id);
 
-        Task<ICollection<Cart>> GetProducts();
+        Task<Cart> GetActiveCartForUser(int userId);
 
-        Task<bool> DeleteProduct(int id);
+        Task<List<Cart>> GetAllCartsForUser(int userId);
+
+        Task<Cart> CreateCart(Cart cart);
+
+        Task UpdateCart(Cart cart);
+
+        Task DeleteCart(int cartId);
     }
 }

@@ -2,7 +2,6 @@
 {
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
-    using SuplementShop.Application.Requests;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -16,28 +15,60 @@
             this.repo = repo;
         }
 
-        public async Task<Cart> AddCartItem(int CartId, CartItem cartItem)
+        public async Task<Cart> GetOrCreateCartForUser(int userId)
         {
-            if (CartId != null)
-            {
-                this.cartItem = await.repo.GetProduct();
-            }
-           
-        }
+            Cart cart = await repo.GetActiveCartForUser(userId);
 
-        public async Task<Cart> AddCartItem(int CartId, CartItem cartItem)
-        {
-            if (CartId != null)
+            if(cart != null)
             {
-                this.cartItem = await.repo.GetProduct();
+                return cart;
             }
 
+            cart = new Cart
+            {
+                Id = default,
+                CartStatus = CartStatus.Active,
+                PaymentId = default,
+                UserId = userId
+            };
+
+            await repo.CreateCart(cart);
+        }
+
+        public Task<Cart> AddCartItem(int userId, int cartId, CartItem cartItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Cart> Buy(int userId, int cartId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Cart> Clear(int userId, int cartId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Cart> Decrement(int userId, int cartId, int productId)
+        {
+            throw new NotImplementedException();
         }
 
 
+        public Task<Cart> Increment(int userId, int cartId, int productId)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<IEnumerable<Cart>> ListCartsForUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
 
-
-
+        public Task<Cart> RemoveCartItem(int userId, int cartId, int productId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
