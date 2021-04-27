@@ -56,9 +56,12 @@ namespace SuplementShop.Web
 
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<ICartRepo, CartRepo>();
+            services.AddScoped<ICartItemRepo, CartItemRepo>();
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICartService, CartService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

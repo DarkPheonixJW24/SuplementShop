@@ -6,7 +6,9 @@
 
     public interface ICartRepo
     {
-        Task<Cart> GetCart(int id);
+        Task<Cart> GetCart(int userId, int id);
+
+        Task<Cart> GetCartWithProducts(int userId, int id);
 
         Task<Cart> GetActiveCartForUser(int userId);
 
@@ -16,6 +18,6 @@
 
         Task UpdateCart(Cart cart);
 
-        Task DeleteCart(int cartId);
+        Task DeleteCart(int userId, int cartId);
     }
 }
