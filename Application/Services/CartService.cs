@@ -1,7 +1,9 @@
 ﻿namespace SuplementShop.Application.Services
 {
+    using Stripe;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
+    using SuplementShop.Application.Requests;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,12 +14,14 @@
         private readonly ICartRepo cartRepo;
         private readonly ICartItemRepo cartItemRepo;
         private readonly IProductRepo productRepo;
+        private readonly ChargeService chargeService;
 
-        public CartService(ICartRepo cartRepo, ICartItemRepo cartItemRepo, IProductRepo productRepo)
+        public CartService(ICartRepo cartRepo, ICartItemRepo cartItemRepo, IProductRepo productRepo, ChargeService chargeService)
         {
             this.cartRepo = cartRepo;
             this.cartItemRepo = cartItemRepo;
             this.productRepo = productRepo;
+            this.chargeService = chargeService;
         }
 
         public async Task<Cart> GetOrCreateCartForUser(int userId)
@@ -33,7 +37,7 @@
             {
                 Id = default,
                 CartStatus = CartStatus.Active,
-                PaymentId = default,
+                ChargeId = default,
                 UserId = userId
             };
 
@@ -49,7 +53,7 @@
                 throw new NotImplementedException();
             }
 
-            Product product = await productRepo.GetProduct(productId);
+            Entities.Product product = await productRepo.GetProduct(productId);
 
             if (product == null)
             {
@@ -77,9 +81,9 @@
             return cart;
         }
 
-        public async Task<Cart> Buy(int userId, int cartId)
+        public async Task<Cart> Buy(int userId, BuyCartRequest request)
         {
-            Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
+            Cart cart = await cartRepo.GetCartWithProducts(userId, request.CartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
@@ -91,9 +95,22 @@
                 throw new NotImplementedException();
             }
 
-            // Insert stripe code here
+            ChargeCreateOptions options = new ChargeCreateOptions
+            {
+                Amount = cart.CartItems.Sum(x => x.Price * x.Count),
+                Currency = "mkd",
+                Source = request.Token
+            };
+
+            Charge charge = chargeService.Create(options);
+
+            if(charge.Status != "succeeded")
+            {
+                throw new NotImplementedException();
+            }
 
             cart.CartStatus = CartStatus.Bought;
+            cart.ChargeId = charge.Id;
 
             await cartRepo.UpdateCart(cart);
 
@@ -199,6 +216,21 @@
             cart.CartItems.Remove(cartItem);
 
             return cart;
+        }
+
+        public async Task<Charge> TestCharge()
+        {
+            ChargeCreateOptions options = new ChargeCreateOptions
+            {
+                Amount = 100,
+                Currency = "mkd",
+                Source = "tok_visa", // This is the user token
+                ReceiptEmail = "hello_dotnet@example.com",
+            };
+
+            Charge charge = await chargeService.CreateAsync(options);
+
+            return charge;
         }
     }
 }

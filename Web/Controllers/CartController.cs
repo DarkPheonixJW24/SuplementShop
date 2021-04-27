@@ -31,8 +31,8 @@
             return Ok(result);
         }
 
-        [HttpGet("buy/{cartId:int}")]
-        public async Task<IActionResult> Buy([FromRoute] int cartId)
+        [HttpPost("buy/{cartId:int}")]
+        public async Task<IActionResult> Buy([FromBody] BuyCartRequest request)
         {
             var userId = User.GetLoggedInUserId();
 
@@ -41,7 +41,7 @@
                 return Unauthorized("Not logged in");
             }
 
-            var result = await cartService.Buy(cartId, userId.Value);
+            var result = await cartService.Buy(userId.Value, request);
             return Ok(result);
         }
 
@@ -124,6 +124,13 @@
             }
 
             var result = await cartService.ListCartsForUser(userId.Value);
+            return Ok(result);
+        }
+
+        [HttpGet("ice_me")]
+        public async Task<IActionResult> IceIceBaby()
+        {
+            var result = await cartService.TestCharge();
             return Ok(result);
         }
     }

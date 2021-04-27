@@ -8,7 +8,7 @@
     {
         public void Configure(EntityTypeBuilder<CartItem> builder)
         {
-            builder.ToTable("Cart");
+            builder.ToTable("CartItem");
 
             builder.HasKey(x => x.Id);
 

@@ -9,6 +9,7 @@ namespace SuplementShop.Web
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
+    using Stripe;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Services;
     using SuplementShop.Persistence;
@@ -54,13 +55,17 @@ namespace SuplementShop.Web
                 };
             }); ;
 
+            StripeConfiguration.ApiKey = Configuration["Stripe:SKey"];
+
+            services.AddScoped<ChargeService>(builder => new());
+
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<ICartRepo, CartRepo>();
             services.AddScoped<ICartItemRepo, CartItemRepo>();
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductService, SuplementShop.Application.Services.ProductService>();
             services.AddScoped<ICartService, CartService>();
         }
 
