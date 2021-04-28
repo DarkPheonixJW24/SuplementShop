@@ -2,6 +2,7 @@
 {
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
+    using SuplementShop.Application.Responses;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -14,14 +15,16 @@
             this.categoryRepo = categoryRepo;
         }
 
-        public async Task<Category> AddCategory(Category category)
+        public async Task<Response<Category>> AddCategory(Category category)
         {
-            return await categoryRepo.CreateCategory(category);
+            var response = await categoryRepo.CreateCategory(category);
+            return Response<Category>.Ok(response);
         }
 
-        public async Task<IEnumerable<Category>> ListAllCategories()
+        public async Task<Response<IEnumerable<Category>>> ListAllCategories()
         {
-            return await categoryRepo.ListCategories();
+            var response = await categoryRepo.ListCategories();
+            return Response<IEnumerable<Category>>.Ok(response);
         }
     }
 }

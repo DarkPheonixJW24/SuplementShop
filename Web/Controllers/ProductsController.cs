@@ -24,8 +24,8 @@
         [AllowAnonymous]
         public async Task<IActionResult> GetProducts()
         {
-            ICollection<Product> products = await productService.GetProducts();
-            return Ok(products);
+            var products = await productService.GetProducts();
+            return this.ToResult(products);
         }
 
         [HttpGet]
@@ -33,8 +33,8 @@
         [Route("{id:int}")]
         public async Task<IActionResult> GetProduct([FromRoute] int id)
         {
-            Product product = await productService.GetProduct(id);
-            return product != null ? Ok(product) : NotFound(id);
+            var product = await productService.GetProduct(id);
+            return product.Value != null ? Ok(product) : NotFound(id);
         }
 
         [HttpPost]
@@ -46,9 +46,9 @@
                 return Unauthorized();
             }
 
-            await productService.CreateProduct(request);
+            var response = await productService.CreateProduct(request);
 
-            return Ok();
+            return this.ToResult(response);
         }
 
         [HttpPut]
@@ -61,9 +61,9 @@
                 return Unauthorized();
             }
 
-            await productService.UpdateProduct(id, request);
+            var response = await productService.UpdateProduct(id, request);
 
-            return Ok();
+            return this.ToResult(response);
         }
 
         [HttpDelete]
@@ -76,23 +76,25 @@
                 return Unauthorized();
             }
 
-            await productService.DeleteProduct(id);
+            var response = await productService.DeleteProduct(id);
 
-            return Ok();
+            return this.ToResult(response);
         }
 
         [AllowAnonymous]
         [HttpGet("search/{searchTerm}")]
-        public async Task<List<Product>> Search(string searchTerm)
+        public async Task<IActionResult> Search(string searchTerm)
         {
-            return await productService.SearchProducts(searchTerm);
+            var response = await productService.SearchProducts(searchTerm);
+            return this.ToResult(response);
         }
 
         [AllowAnonymous]
         [HttpGet("manufacturer/{manufacturer}")]
-        public async Task<List<Product>> GetAllByManufacturer(string mannufacturer)
+        public async Task<IActionResult> GetAllByManufacturer(string mannufacturer)
         {
-            return await productService.GetAllByMannufacturer(mannufacturer);
+            var response = await productService.GetAllByMannufacturer(mannufacturer);
+            return this.ToResult(response);
         }
     }
 }

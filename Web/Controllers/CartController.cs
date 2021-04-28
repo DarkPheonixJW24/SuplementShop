@@ -28,7 +28,7 @@
             }
 
             var result = await cartService.GetOrCreateCartForUser(userId.Value);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpPost("buy/{cartId:int}")]
@@ -42,7 +42,7 @@
             }
 
             var result = await cartService.Buy(userId.Value, request);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet("clear/{cartId:int}")]
@@ -56,7 +56,7 @@
             }
 
             var result = await cartService.Clear(userId.Value, cartId);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpPost("cartItem/{cartId:int}")]
@@ -70,7 +70,7 @@
             }
 
             var result = await cartService.AddCartItem(userId.Value, cartId, request.ProductId);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpDelete("cartItem/{cartId:int}/{cartItemId:int}")]
@@ -83,7 +83,7 @@
                 return Unauthorized("Not logged in");
             }
             var result = await cartService.RemoveCartItem(userId.Value, cartId, cartItemId);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet("increment/{cartId:int}/{productId:int}")]
@@ -97,7 +97,7 @@
             }
 
             var result = await cartService.Increment(userId.Value, cartId, productId);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet("decrement/{cartId:int}/{productId:int}")]
@@ -110,7 +110,7 @@
                 return Unauthorized("Not logged in");
             }
             var result = await cartService.Decrement(userId.Value, cartId, productId);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet("list")]
@@ -124,14 +124,14 @@
             }
 
             var result = await cartService.ListCartsForUser(userId.Value);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet("ice_me")]
         public async Task<IActionResult> IceIceBaby()
         {
             var result = await cartService.TestCharge();
-            return Ok(result);
+            return this.ToResult(result);
         }
     }
 }

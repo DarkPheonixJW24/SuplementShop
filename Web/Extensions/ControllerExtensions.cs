@@ -1,6 +1,8 @@
 ﻿namespace SuplementShop.Web.Extensions
 {
+    using Microsoft.AspNetCore.Mvc;
     using SuplementShop.Application.Entities;
+    using SuplementShop.Application.Responses;
     using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
@@ -33,6 +35,18 @@
             else
             {
                 return Enum.Parse<Role>(role);
+            }
+        }
+
+        public static IActionResult ToResult<T>(this ControllerBase c, Response<T> response) where T : class
+        {
+            if (response.Message.Length == 0)
+            {
+                return c.Ok(response.Value);
+            }
+            else
+            {
+                return c.BadRequest(response.Message);
             }
         }
     }

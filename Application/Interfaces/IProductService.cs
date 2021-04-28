@@ -2,25 +2,26 @@
 {
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Requests;
+    using SuplementShop.Application.Responses;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IProductService
     {
-        Task<Product> GetProduct(int id);
+        Task<Response<Product>> GetProduct(int id);
 
-        Task<IEnumerable<Product>> GetProductsForCategory(string name);
+        Task<Response<IEnumerable<Product>>> GetProductsForCategory(string name);
 
-        Task<List<Product>> GetAllByMannufacturer(string mannufacturer);
+        Task<Response<List<Product>>> GetAllByMannufacturer(string mannufacturer);
 
-        Task<List<Product>> SearchProducts(string searchTerm);
+        Task<Response<List<Product>>> SearchProducts(string searchTerm);
 
-        Task<ICollection<Product>> GetProducts();
+        Task<Response<ICollection<Product>>> GetProducts();
 
-        Task<string> CreateProduct(CreateProductRequest request);
+        Task<Response<string>> CreateProduct(CreateProductRequest request);
 
-        Task<string> UpdateProduct(int id, UpdateProductRequest request);
+        Task<Response<string>> UpdateProduct(int id, UpdateProductRequest request);
 
-        Task<bool> DeleteProduct(int id);
+        Task<Response<string>> DeleteProduct(int id);
     }
 }

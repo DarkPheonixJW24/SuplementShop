@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
+    using SuplementShop.Web.Extensions;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -23,22 +24,22 @@
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            IEnumerable<Category> result = await categoryService.ListAllCategories();
-            return Ok(result);
+            var result = await categoryService.ListAllCategories();
+            return this.ToResult(result);
         }
 
         [HttpGet("{name}")]
         public async Task<IActionResult> GetProductsForCategory(string name)
         {
             var result = await productService.GetProductsForCategory(name);
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpPost("add")]
         public async Task<IActionResult> AddCategory(Category category)
         {
             var result = await categoryService.AddCategory(category);
-            return Ok(result);
+            return this.ToResult(result);
         }
     }
 }

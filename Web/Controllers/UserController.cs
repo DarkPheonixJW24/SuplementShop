@@ -23,9 +23,9 @@
         [Route("sign-up")]
         public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
         {
-            string result = await UserService.SignUpAsync(request);
+            var result = await UserService.SignUpAsync(request);
 
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpPost]
@@ -35,7 +35,7 @@
         {
             var result = await UserService.LogInAsync(request);
 
-            return Ok(result);
+            return this.ToResult(result);
         }
 
         [HttpGet]

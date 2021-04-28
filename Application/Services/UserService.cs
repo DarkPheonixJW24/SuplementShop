@@ -23,41 +23,42 @@
             Config = config;
         }
 
-        public async Task<TokenResponse> LogInAsync(LogInRequest request)
+        public async Task<Response<TokenResponse>> LogInAsync(LogInRequest request)
         {
             User user = await AuthenticateUserAsync(request);
 
             if (user == null)
             {
-                throw new NotImplementedException();
+                return Response<TokenResponse>.Error("Login failed");
             }
 
             string token = GenerateJSONWebToken(user);
 
-            return new TokenResponse
+            return Response<TokenResponse>.Ok(new TokenResponse
             {
                 Id = user.Id,
                 FullName = user.FullName,
                 Email = user.Email,
                 Token = token
-            };
+            });
         }
 
-        public async Task<string> SignUpAsync(SignUpRequest request)
+        public async Task<Response<string>> SignUpAsync(SignUpRequest request)
         {
+            // Check request
             User user = User.Create(default, request.Email, request.FullName, request.Password, Role.User);
 
             await UserRepo.CreateUserAsync(user);
 
-            return "User created successfully. You can log in now.";
+            return Response<string>.Ok("User created successfully. You can log in now.");
         }
 
         private string GenerateJSONWebToken(User userInfo)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config["Jwt:Key"]));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[] {
+            Claim[] claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, userInfo.FullName),
                 new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
                 new Claim(JwtRegisteredClaimNames.Sid, userInfo.Id.ToString()),
@@ -65,7 +66,7 @@
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var token = new JwtSecurityToken(Config["Jwt:Issuer"],
+            JwtSecurityToken token = new JwtSecurityToken(Config["Jwt:Issuer"],
               Config["Jwt:Issuer"],
               claims,
               expires: DateTime.Now.AddMinutes(120),

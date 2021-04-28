@@ -4,7 +4,7 @@
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Requests;
-    using System;
+    using SuplementShop.Application.Responses;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -27,13 +27,13 @@
             this.chargeService = chargeService;
         }
 
-        public async Task<Cart> GetOrCreateCartForUser(int userId)
+        public async Task<Response<Cart>> GetOrCreateCartForUser(int userId)
         {
             Cart cart = await cartRepo.GetActiveCartForUser(userId);
 
             if (cart != null)
             {
-                return cart;
+                return Response<Cart>.Ok(cart);
             }
 
             cart = new Cart
@@ -44,28 +44,29 @@
                 UserId = userId
             };
 
-            return await cartRepo.CreateCart(cart);
+            var response = await cartRepo.CreateCart(cart);
+            return Response<Cart>.Ok(response);
         }
 
-        public async Task<Cart> AddCartItem(int userId, int cartId, int productId)
+        public async Task<Response<Cart>> AddCartItem(int userId, int cartId, int productId)
         {
             Cart cart = await cartRepo.GetCart(userId, cartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             Entities.Product product = await productRepo.GetProduct(productId);
 
             if (product == null)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Product not found");
             }
 
             if (product.Stock < 1)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Product not in stock");
             }
 
             CartItem cartItem = new CartItem
@@ -81,21 +82,21 @@
 
             cart = await cartRepo.GetCart(userId, cartId);
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Cart> Buy(int userId, BuyCartRequest request)
+        public async Task<Response<Cart>> Buy(int userId, BuyCartRequest request)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, request.CartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             if (cart.CartItems.Any(x => x.Count > x.Product.Stock))
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Product not in stock");
             }
 
             ChargeCreateOptions options = new ChargeCreateOptions
@@ -107,9 +108,9 @@
 
             Charge charge = chargeService.Create(options);
 
-            if(charge.Status != "succeeded")
+            if (charge.Status != "succeeded")
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Payment failed");
             }
 
             cart.CartStatus = CartStatus.Bought;
@@ -117,16 +118,16 @@
 
             await cartRepo.UpdateCart(cart);
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Cart> Clear(int userId, int cartId)
+        public async Task<Response<Cart>> Clear(int userId, int cartId)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             foreach (CartItem item in cart.CartItems)
@@ -136,16 +137,16 @@
 
             cart.CartItems.Clear();
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Cart> Decrement(int userId, int cartId, int cartItemId)
+        public async Task<Response<Cart>> Decrement(int userId, int cartId, int cartItemId)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
@@ -153,7 +154,7 @@
 
             if (cartItem == null)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Item not found");
             }
 
             if (cartItem.Count > 1)
@@ -167,61 +168,63 @@
                 cart.CartItems.Remove(cartItem);
             }
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Cart> Increment(int userId, int cartId, int cartItemId)
+        public async Task<Response<Cart>> Increment(int userId, int cartId, int cartItemId)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
 
             if (cartItem == null)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Item not found");
             }
 
             cartItem.Count++;
             await cartItemRepo.UpdateCartItem(cartItem);
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<IEnumerable<Cart>> ListCartsForUser(int userId)
+        public async Task<Response<IEnumerable<Cart>>> ListCartsForUser(int userId)
         {
-            return await cartRepo.GetAllCartsForUser(userId);
+            var response = await cartRepo.GetAllCartsForUser(userId);
+
+            return Response<IEnumerable<Cart>>.Ok(response);
         }
 
-        public async Task<Cart> RemoveCartItem(int userId, int cartId, int cartItemId)
+        public async Task<Response<Cart>> RemoveCartItem(int userId, int cartId, int cartItemId)
         {
 
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Invalid cart");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
 
             if (cartItem == null)
             {
-                throw new NotImplementedException();
+                return Response<Cart>.Error("Item not found");
             }
 
             await cartItemRepo.DeleteCartItem(cartItemId);
 
             cart.CartItems.Remove(cartItem);
 
-            return cart;
+            return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Charge> TestCharge()
+        public async Task<Response<Charge>> TestCharge()
         {
             ChargeCreateOptions options = new ChargeCreateOptions
             {
@@ -233,7 +236,7 @@
 
             Charge charge = await chargeService.CreateAsync(options);
 
-            return charge;
+            return Response<Charge>.Ok(charge);
         }
     }
 }

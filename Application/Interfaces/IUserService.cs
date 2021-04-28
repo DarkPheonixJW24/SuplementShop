@@ -6,8 +6,8 @@
 
     public interface IUserService
     {
-        Task<string> SignUpAsync(SignUpRequest request);
+        Task<Response<string>> SignUpAsync(SignUpRequest request);
 
-        Task<TokenResponse> LogInAsync(LogInRequest request);
+        Task<Response<TokenResponse>> LogInAsync(LogInRequest request);
     }
 }

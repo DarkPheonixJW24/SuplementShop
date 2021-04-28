@@ -3,6 +3,7 @@
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Requests;
+    using SuplementShop.Application.Responses;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -16,26 +17,28 @@
             this.repo = repo;
         }
 
-        public async Task<Product> GetProduct(int id)
+        public async Task<Response<Product>> GetProduct(int id)
         {
-            return await repo.GetProduct(id);
+            var response = await repo.GetProduct(id);
+            return Response<Product>.Ok(response);
         }
 
-        public async Task<ICollection<Product>> GetProducts()
+        public async Task<Response<ICollection<Product>>> GetProducts()
         {
-            return await repo.GetProducts();
+            var response = await repo.GetProducts();
+            return Response<ICollection<Product>>.Ok(response);
         }
 
-        public async Task<string> CreateProduct(CreateProductRequest request)
+        public async Task<Response<string>> CreateProduct(CreateProductRequest request)
         {
             if(request.Stock < 0)
             {
-                return "Stock cant be less then zero you dumb fuck";
+                return Response<string>.Error("Stock cant be less then zero you dumb fuck");
             }
 
             if(request.Price < 0)
             {
-                return "This aint no charity you dumb fuck";
+                return Response<string>.Error("This aint no charity you dumb fuck");
             }
 
             Product product = new Product
@@ -51,26 +54,26 @@
 
             await repo.CreateProduct(product);
 
-            return string.Empty;
+            return Response<string>.Ok(string.Empty);
         }
 
-        public async Task<string> UpdateProduct(int id, UpdateProductRequest request)
+        public async Task<Response<string>> UpdateProduct(int id, UpdateProductRequest request)
         {
             if (request.Stock < 0)
             {
-                return "Stock cant be less then zero you dumb fuck";
+                return Response<string>.Error("Stock cant be less then zero you dumb fuck");
             }
 
             if (request.Price < 0)
             {
-                return "This aint no charity you dumb fuck";
+                return Response<string>.Error("This aint no charity you dumb fuck");
             }
 
             Product product = await repo.GetProduct(id);
 
             if (product == null)
             {
-                return "Not found";
+                return Response<string>.Error("Not found");
             }
 
             product.Name = request.Name;
@@ -82,25 +85,26 @@
 
             await repo.UpdateProduct(id, product);
 
-            return string.Empty;
+            return Response<string>.Ok(string.Empty);
         }
 
-        public async Task<bool> DeleteProduct(int id)
+        public async Task<Response<string>> DeleteProduct(int id)
         {
-            return await repo.DeleteProduct(id);
+            var response = await repo.DeleteProduct(id);
+            return Response<string>.Ok("Deleted");
         }
 
-        public Task<IEnumerable<Product>> GetProductsForCategory(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Product>> GetAllByMannufacturer(string mannufacturer)
+        public Task<Response<IEnumerable<Product>>> GetProductsForCategory(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Product>> SearchProducts(string searchTerm)
+        public Task<Response<List<Product>>> GetAllByMannufacturer(string mannufacturer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Response<List<Product>>> SearchProducts(string searchTerm)
         {
             throw new NotImplementedException();
         }
