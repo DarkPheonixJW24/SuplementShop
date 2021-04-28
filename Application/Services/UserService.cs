@@ -29,16 +29,16 @@
 
             if (user == null)
             {
-                return new TokenResponse
-                {
-                    Token = null
-                };
+                throw new NotImplementedException();
             }
 
             string token = GenerateJSONWebToken(user);
 
             return new TokenResponse
             {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
                 Token = token
             };
         }

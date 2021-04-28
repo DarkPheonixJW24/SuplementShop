@@ -67,8 +67,7 @@ export default {
     buyCart() {
       if (this.user && this.cart)
         this.$store.dispatch("cartState/buyCart", {
-          cartId: this.cart.id,
-          userId: this.user.id
+          cartId: this.cart.id
         });
     },
     incrementCartItem(productId) {

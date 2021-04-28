@@ -23,7 +23,7 @@
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await categoryService.ListAllCategories();
+            IEnumerable<Category> result = await categoryService.ListAllCategories();
             return Ok(result);
         }
 

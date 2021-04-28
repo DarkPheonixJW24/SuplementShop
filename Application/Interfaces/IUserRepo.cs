@@ -8,5 +8,6 @@
         Task<User> GetUserByEmailAsync(string email);
 
         Task<int> CreateUserAsync(User user);
+        void FillDb();
     }
 }

@@ -15,7 +15,6 @@
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name).IsRequired();
-            builder.Property(x => x.Category).IsRequired();
             builder.Property(x => x.Price).IsRequired();
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Stock).IsRequired();
@@ -24,6 +23,9 @@
                                v => JsonConvert.DeserializeObject<List<string>>(v)
                                );
             builder.Property(x => x.Manufacturer);
+            builder.Property(x => x.CategoryId).IsRequired();
+
+            builder.HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId);
         }
     }
 }

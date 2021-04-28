@@ -43,7 +43,7 @@
                 Id = default,
                 Name = request.Name,
                 Description = request.Description,
-                Category = request.Category,
+                CategoryId = request.CategoryId,
                 Price = request.Price,
                 Stock = request.Stock,
                 ImagesUrls = request.Images
@@ -75,7 +75,7 @@
 
             product.Name = request.Name;
             product.Description = request.Description;
-            product.Category = request.Category;
+            product.CategoryId = request.CategoryId;
             product.Price = request.Price;
             product.Stock = request.Stock;
             product.ImagesUrls = request.Images;

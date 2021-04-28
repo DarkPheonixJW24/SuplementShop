@@ -20,15 +20,38 @@
         public async Task<int> CreateUserAsync(User user)
         {
             EntityEntry<User> result = await Users.AddAsync(user);
-            
+
             await context.SaveChangesAsync();
-            
+
             return result.Entity.Id;
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await Users.AsNoTracking().FirstOrDefaultAsync(user => user.Email == email);
+        }
+
+        public void FillDb()
+        {
+            Users.AddOrUpdate(new User
+            {
+                Id = 1,
+                Email = "admin@mail.com",
+                FullName = "IceAdmin",
+                Password = "password",
+                Role = Role.Admin
+            });
+
+            Users.AddOrUpdate(new User
+            {
+                Id = 2,
+                Email = "user@mail.com",
+                FullName = "IceMan",
+                Password = "password",
+                Role = Role.Admin
+            });
+
+            context.SaveChanges();
         }
     }
 }

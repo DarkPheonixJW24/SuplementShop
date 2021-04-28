@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public class Cart
+    public class Cart: Entity
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
         public CartStatus CartStatus { get; set; }
         public string ChargeId { get; set; }

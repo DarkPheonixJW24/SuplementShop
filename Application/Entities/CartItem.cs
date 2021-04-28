@@ -1,8 +1,7 @@
 ﻿namespace SuplementShop.Application.Entities
 {
-    public class CartItem
+    public class CartItem : Entity
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public string ProductName { get; set; }
         public long Price { get; set; }

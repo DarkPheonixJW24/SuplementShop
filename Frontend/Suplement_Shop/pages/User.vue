@@ -6,7 +6,11 @@
       </template>
       <v-list-group flush>
         <template v-if="hasItems">
-          <CartListItem v-for="cart in carts" :key="cart.id" :cart="cart"></CartListItem>
+          <CartListItem
+            v-for="cart in carts"
+            :key="cart.id"
+            :cart="cart"
+          ></CartListItem>
         </template>
         <v-list-group-item v-else href="#">No items</v-list-group-item>
       </v-list-group>
@@ -19,12 +23,10 @@ import CartListItem from "@/components/CartListItem.vue";
 
 export default {
   components: {
-    CartListItem
+    CartListItem,
   },
   mounted() {
-    this.$store.dispatch("userState/loadCartHistory", {
-      userId: this.$store.state.userState.user.id
-    });
+    this.$store.dispatch("userState/loadCartHistory");
   },
   computed: {
     cartHistoryState() {
@@ -35,7 +37,7 @@ export default {
     },
     hasItems() {
       return this.carts.length;
-    }
-  }
+    },
+  },
 };
 </script>

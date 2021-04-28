@@ -16,7 +16,10 @@
         private readonly IProductRepo productRepo;
         private readonly ChargeService chargeService;
 
-        public CartService(ICartRepo cartRepo, ICartItemRepo cartItemRepo, IProductRepo productRepo, ChargeService chargeService)
+        public CartService(ICartRepo cartRepo,
+                           ICartItemRepo cartItemRepo,
+                           IProductRepo productRepo,
+                           ChargeService chargeService)
         {
             this.cartRepo = cartRepo;
             this.cartItemRepo = cartItemRepo;

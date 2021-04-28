@@ -41,6 +41,7 @@ namespace SuplementShop.Web
                 {
                     options.UseSqlite("DataSource=suplementShopDb.db");
                 });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -63,10 +64,13 @@ namespace SuplementShop.Web
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<ICartRepo, CartRepo>();
             services.AddScoped<ICartItemRepo, CartItemRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, SuplementShop.Application.Services.ProductService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<SeedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +85,10 @@ namespace SuplementShop.Web
 
             app.UseRouting();
 
+            app.UseCors(builder => builder.AllowAnyOrigin()
+                                          .AllowAnyMethod()
+                                          .AllowAnyHeader());
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
@@ -88,7 +96,6 @@ namespace SuplementShop.Web
                 endpoints.MapControllers();
             });
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             SetUpDb(app);
         }
@@ -97,8 +104,10 @@ namespace SuplementShop.Web
         {
             using IServiceScope scope = app.ApplicationServices.CreateScope();
             using MyDbContext dbContext = scope.ServiceProvider.GetService<MyDbContext>();
+            SeedService seedService = scope.ServiceProvider.GetService<SeedService>();
 
             dbContext.Database.EnsureCreated();
+            seedService.FillDb();
         }
     }
 }
