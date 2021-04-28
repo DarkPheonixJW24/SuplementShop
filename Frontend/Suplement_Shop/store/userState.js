@@ -1,6 +1,7 @@
 export default {
   state: () => ({
     user: undefined,
+    token: 'Works',
     loading: true,
     error: undefined,
   }),
@@ -8,7 +9,13 @@ export default {
     SET_USER_LOADING(state) {
       state.user = undefined;
       state.loading = true;
-      state.error = undefined;
+      state.error = 'Works';
+    },
+    SET_TOKEN(state, token) {
+      state.token = token;
+    },
+    CLEAR_TOKEN(stete) {
+      stete.token = undefined;
     },
     SET_USER(state, user) {
       state.user = user;
