@@ -4,8 +4,8 @@
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class ProductRepo : IProductRepo
@@ -27,6 +27,11 @@
         public async Task<ICollection<Product>> GetProducts()
         {
             return await Products.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<ICollection<Product>> GetProductsByCategory(string category)
+        {
+            return await Products.AsNoTracking().Include(x => x.Category).Where(x => x.Category.Name == category).ToListAsync();
         }
 
         public async Task<Product> CreateProduct(Product product)
@@ -63,6 +68,28 @@
             await context.SaveChangesAsync();
 
             return true;
+        }
+
+        public void FillDb()
+        {
+            for (int i = 1; i < 60; i++)
+            {
+                Products.AddOrUpdate(new Product
+                {
+                    Id = i,
+                    CategoryId = i % 2 + 1,
+                    Description = $"Product {i}",
+                    ImageUrls = new List<string>() {
+                        "https://missouribusinessalert.com/wp-content/uploads/2015/05/three-ice-cubes.jpg"
+                    },
+                    Name = $"Product {i}",
+                    Price = 100 + i * 25,
+                    Stock = 10,
+                    Manufacturer = "Manufacturer"
+                });
+            }
+
+            context.SaveChanges();
         }
     }
 }

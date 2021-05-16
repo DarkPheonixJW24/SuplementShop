@@ -24,7 +24,7 @@ export default {
     ProductsCard
   },
   mounted() {
-    this.$store.dispatch("productState/loadProducts", this.$route.params.category);
+    this.$store.dispatch("productsState/loadProducts", this.$route.params.category);
   },
   computed: {
     productsState() {

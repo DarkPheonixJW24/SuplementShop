@@ -18,7 +18,7 @@
             builder.Property(x => x.Price).IsRequired();
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.Stock).IsRequired();
-            builder.Property(x => x.ImagesUrls)
+            builder.Property(x => x.ImageUrls)
                 .HasConversion(v => JsonConvert.SerializeObject(v),
                                v => JsonConvert.DeserializeObject<List<string>>(v)
                                );

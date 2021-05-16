@@ -1,5 +1,5 @@
 <template>
-  <v-card no-body class="product-card">
+  <!-- <v-card no-body class="product-card">
     <v-row no-gutters md="6">
       <v-card-img :src="product.imageUrls[0]" alt="Image" class="rounded-0"></v-card-img>
     </v-row>
@@ -14,6 +14,15 @@
       <v-button :to="'/product/' + product.id" variant="primary" style="margin-right: 1rem;">Details</v-button>
       <v-button @click="addToCart()" variant="primary">Add to cart</v-button>
     </template>
+  </v-card> -->
+  <v-card> 
+    <v-img :src="product.imageUrls[0]" />
+    <Ribbon class="product-ribon" :text="product.price + ' ден.'"></Ribbon>
+    <v-card-title>{{product.name}}</v-card-title>
+    <v-card-actions>
+      <v-btn flat color="blue" dark small rounded :to="'/product/' + product.id" variant="primary" style="margin-right: 1rem;">Details</v-btn>
+      <v-btn flat color="blue" dark small rounded @click="addToCart()" variant="primary">Add to cart</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -40,15 +49,4 @@ export default {
   top: -22px;
 }
 
-.product-card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  transition-duration: 200ms;
-  &:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-}
-
-.product-description {
-  white-space: pre-wrap;
-}
 </style>

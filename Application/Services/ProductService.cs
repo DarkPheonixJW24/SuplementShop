@@ -20,7 +20,10 @@
         public async Task<Response<Product>> GetProduct(int id)
         {
             var response = await repo.GetProduct(id);
-            return Response<Product>.Ok(response);
+            if (response != null)
+                return Response<Product>.Ok(response);
+            else
+                return Response<Product>.Error("Not found");
         }
 
         public async Task<Response<ICollection<Product>>> GetProducts()
@@ -31,12 +34,12 @@
 
         public async Task<Response<string>> CreateProduct(CreateProductRequest request)
         {
-            if(request.Stock < 0)
+            if (request.Stock < 0)
             {
                 return Response<string>.Error("Stock cant be less then zero you dumb fuck");
             }
 
-            if(request.Price < 0)
+            if (request.Price < 0)
             {
                 return Response<string>.Error("This aint no charity you dumb fuck");
             }
@@ -49,7 +52,7 @@
                 CategoryId = request.CategoryId,
                 Price = request.Price,
                 Stock = request.Stock,
-                ImagesUrls = request.Images
+                ImageUrls = request.Images
             };
 
             await repo.CreateProduct(product);
@@ -81,7 +84,7 @@
             product.CategoryId = request.CategoryId;
             product.Price = request.Price;
             product.Stock = request.Stock;
-            product.ImagesUrls = request.Images;
+            product.ImageUrls = request.Images;
 
             await repo.UpdateProduct(id, product);
 
@@ -94,9 +97,10 @@
             return Response<string>.Ok("Deleted");
         }
 
-        public Task<Response<IEnumerable<Product>>> GetProductsForCategory(string name)
+        public async Task<Response<IEnumerable<Product>>> GetProductsForCategory(string name)
         {
-            throw new NotImplementedException();
+            var result = await repo.GetProductsByCategory(name);
+            return Response<IEnumerable<Product>>.Ok(result);
         }
 
         public Task<Response<List<Product>>> GetAllByMannufacturer(string mannufacturer)

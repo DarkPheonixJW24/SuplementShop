@@ -34,7 +34,7 @@
         public async Task<IActionResult> GetProduct([FromRoute] int id)
         {
             var product = await productService.GetProduct(id);
-            return product.Value != null ? Ok(product) : NotFound(id);
+            return this.ToResult(product);
         }
 
         [HttpPost]

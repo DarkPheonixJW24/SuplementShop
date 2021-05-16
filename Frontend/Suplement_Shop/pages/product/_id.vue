@@ -1,41 +1,40 @@
 <template>
   <div class="product-container">
     <v-container>
-      <v-card no-body class="product-card" v-if="!loading && !error">
-        <v-row no-gutters>
-          <v-col>
-            <v-carousel
-              id="carousel-1"
-              :interval="4000"
-              controls
-              indicators
-              background="#ababab"
-              img-width="1024"
-              img-height="480"
-              style="text-shadow: 1px 1px 2px #333;"
-            >
-              <v-carousel-slide v-for="image in product.imageUrls" :key="image" :img-src="image"></v-carousel-slide>
+      <template v-if="!loading && !error">
+        <v-card>
+          <v-carousel>
+            <v-carousel-item
+              v-for="image in product.imageUrls"
+              :key="image"
+              :src="image"
+            ></v-carousel-item>
+          </v-carousel>
+        </v-card>
 
-              <v-carousel-slide
-                v-if="!product || !product.imageUrls.length"
-                caption="Blank Image"
-                img-blank
-                img-alt="Blank image"
-              ></v-carousel-slide>
-            </v-carousel>
-          </v-col>
-          <v-col>
-            <v-card-body :title="product.name">
-              <v-link :to="'/manufacturer/' + product.manufacturer">{{product.manufacturer}}</v-link>
-              <v-card-text class="product-description">{{product.description}}</v-card-text>
-            </v-card-body>
-          </v-col>
-        </v-row>
-        <Ribbon class="product-ribon" :text="product.price + ' ден.'"></Ribbon>
-        <template v-slot:footer>
-          <v-button @click="addToCart(product)" variant="primary">Add to cart</v-button>
-        </template>
-      </v-card>
+        <v-card class="mt-10">
+          <v-card-title>
+            {{ product.name }}
+          </v-card-title>
+          <v-card-subtitle :to="'/manufacturer/' + product.manufacturer">
+            <nuxt-link :to="'/manufacturer/' + product.manufacturer">
+              {{ product.manufacturer }}</nuxt-link
+            >
+          <Ribbon
+            class="product-ribon"
+            :text="product.price + ' ден.'"
+          ></Ribbon>
+          </v-card-subtitle>
+          <v-card-text class="product-description">
+            {{ product.description }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn @click="addToCart(product)" color="primary" rounded>Add to cart</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+
       <div v-if="loading">Loading</div>
     </v-container>
   </div>
@@ -46,7 +45,7 @@ import Ribbon from "@/components/Ribbon.vue";
 
 export default {
   components: {
-    Ribbon
+    Ribbon,
   },
   name: "Product",
   mounted() {
@@ -67,7 +66,7 @@ export default {
     },
     cart() {
       return this.$store.state.cartState.cart;
-    }
+    },
   },
   methods: {
     addToCart(product) {
@@ -78,12 +77,12 @@ export default {
             productId: product.id,
             productName: product.name,
             price: product.price,
-            count: 1
-          }
+            count: 1,
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -94,13 +93,9 @@ export default {
   padding: 2rem 2rem;
 }
 
-.product-card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-
 .product-ribon {
-  right: -21px;
-  top: -22px;
+  right: -36px;
+  top: -30px;
 }
 
 .product-description {
