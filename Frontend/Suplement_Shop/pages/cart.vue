@@ -1,32 +1,30 @@
 <template>
   <v-container>
-    <v-card class="cart-card" no-body>
-      <template v-slot:header>
-        <h6 class="mv-0">Cart</h6>
-      </template>
-      <v-list-group flush>
-        <template v-if="hasItems">
-          <CartItem
-            v-for="item in cartItems"
-            :key="item.productId"
-            :item="item"
-            @increment="incrementCartItem(item.productId)"
-            @decrement="decrementCartItem(item.productId)"
-            @remove="removeCartItem(item.productId)"
-          ></CartItem>
-        </template>
-        <v-list-group-item v-else href="#">No items</v-list-group-item>
-      </v-list-group>
-      <template v-slot:footer>
-        <v-row>
-          <v-col>
-            <span>Total price: {{totalPrice}} ден.</span>
-          </v-col>
-          <v-col></v-col>
-          <v-button class="pad" variant="danger" @click="clearCart()">Clear</v-button>
-          <v-button class="pad" variant="primary" @click="buyCart()">Buy</v-button>
-        </v-row>
-      </template>
+    <v-card>
+      <v-card-title> Cart </v-card-title>
+      <v-card-text>
+        <v-list flush>
+          <template v-if="hasItems">
+            <CartItem
+              v-for="item in cartItems"
+              :key="item.productId"
+              :item="item"
+              @increment="incrementCartItem(item.productId)"
+              @decrement="decrementCartItem(item.productId)"
+              @remove="removeCartItem(item.productId)"
+            ></CartItem>
+          </template>
+          <v-list-item v-else>No items</v-list-item>
+        </v-list>
+        <v-divider />
+        <span>Total price: {{ totalPrice }} ден.</span>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn outlined rounded color="red" @click="clearCart()"
+          >Clear</v-btn
+        >
+        <v-btn outlined rounded color="primary" @click="buyCart()">Buy</v-btn>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
@@ -35,7 +33,7 @@
 import CartItem from "@/components/CartItem.vue";
 export default {
   components: {
-    CartItem
+    CartItem,
   },
   computed: {
     cartState() {
@@ -52,12 +50,12 @@ export default {
     },
     totalPrice() {
       return this.cartItems
-        .map(item => item.price * item.count)
+        .map((item) => item.price * item.count)
         .reduce((a, b) => a + b, 0);
     },
     user() {
       return this.$store.state.userState.user;
-    }
+    },
   },
   methods: {
     clearCart() {
@@ -67,14 +65,14 @@ export default {
     buyCart() {
       if (this.user && this.cart)
         this.$store.dispatch("cartState/buyCart", {
-          cartId: this.cart.id
+          cartId: this.cart.id,
         });
     },
     incrementCartItem(productId) {
       if (this.cart) {
         this.$store.dispatch("cartState/incrementCartItem", {
           cartId: this.cart.id,
-          productId: productId
+          productId: productId,
         });
       }
     },
@@ -82,7 +80,7 @@ export default {
       if (this.cart) {
         this.$store.dispatch("cartState/decrementCartItem", {
           cartId: this.cart.id,
-          productId: productId
+          productId: productId,
         });
       }
     },
@@ -90,11 +88,11 @@ export default {
       if (this.cart) {
         this.$store.dispatch("cartState/removeCartItem", {
           cartId: this.cart.id,
-          productId: productId
+          productId: productId,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

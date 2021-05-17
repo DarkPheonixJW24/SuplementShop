@@ -41,7 +41,7 @@ export default {
         .then(r => r.data)
         .then(response => {
           commit("SET_USER", response);
-          dispatch("cartState/loadCart");
+          dispatch("cartState/loadCart", { root: true });
           this.$router.push({
             path: "/",
           });
