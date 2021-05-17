@@ -1,6 +1,5 @@
 
 <template>
-
   <v-container class="products-container">
     <h1>{{ $route.params.category }}</h1>
     <div class="products-grid">
@@ -12,7 +11,6 @@
       ></ProductsCard>
     </div>
   </v-container>
-
 </template>
 
 <script>
@@ -21,10 +19,13 @@ import ProductsCard from "@/components/ProductsCard.vue";
 export default {
   name: "Category",
   components: {
-    ProductsCard
+    ProductsCard,
   },
   mounted() {
-    this.$store.dispatch("productsState/loadProducts", this.$route.params.category);
+    this.$store.dispatch(
+      "productsState/loadProducts",
+      this.$route.params.category
+    );
   },
   computed: {
     productsState() {
@@ -41,7 +42,7 @@ export default {
     },
     cart() {
       return this.$store.state.cartState.cart;
-    }
+    },
   },
   methods: {
     addToCart(product) {
@@ -52,14 +53,13 @@ export default {
             productId: product.id,
             productName: product.name,
             price: product.price,
-            count: 1
-          }
+            count: 1,
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
-
 </script>
 
 <style lang="scss" scoped>

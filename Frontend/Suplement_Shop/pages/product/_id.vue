@@ -2,7 +2,7 @@
   <div class="product-container">
     <v-container>
       <template v-if="!loading && !error">
-        <v-card>
+        <v-card class="rounded-xl">
           <v-carousel>
             <v-carousel-item
               v-for="image in product.imageUrls"
@@ -12,7 +12,7 @@
           </v-carousel>
         </v-card>
 
-        <v-card class="mt-10">
+        <v-card class="mt-10 rounded-xl" >
           <v-card-title>
             {{ product.name }}
           </v-card-title>

@@ -42,17 +42,19 @@ export default {
         .then(response => {
           commit("SET_USER", response);
           dispatch("cartState/loadCart");
+          this.$router.push({
+            path: "/",
+          });
         })
         .catch(error => commit("SET_USER_ERROR", error));
     },
-    register({ commit }, { email, password, fullName }) {
+    register({ commit, dispatch }, { email, password, fullName }) {
       commit("SET_USER_LOADING");
       this.$axios
-        .post(`user/register`, { email, password, fullName })
+        .post(`user/sign-up`, { email, password, fullName })
         .then(r => r.data)
         .then(user => {
-          commit("SET_USER", user);
-          dispatch("userState/logIn", { email, password });
+          dispatch("logIn", { email, password });
         })
         .catch(error => commit("SET_USER_ERROR", error));
     },

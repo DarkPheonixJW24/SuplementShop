@@ -1,10 +1,4 @@
 <template>
-
-  <!-- <router-link :to="'category/' + title" class="category-card">
-    <img :src="image" />
-    <Ribbon class="category-ribbon" :text="title"></Ribbon>
-
-  </router-link> -->
   <v-card elevation="5" class="rounded-xl" :to="'category/' + title">
     <v-img :src="image" class="rounded-xl" :to="'category/' + title"/>
     <Ribbon class="category-ribbon" :text="title"></Ribbon>
