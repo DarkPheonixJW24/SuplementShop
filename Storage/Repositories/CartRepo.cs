@@ -34,7 +34,7 @@
         public Task<Cart> GetActiveCartForUser(int userId)
         {
             return Cart.Include(x => x.CartItems)
-                       .FirstAsync(x => x.UserId == userId && x.CartStatus == CartStatus.Active);
+                       .FirstOrDefaultAsync(x => x.UserId == userId && x.CartStatus == CartStatus.Active);
         }
 
         public Task<List<Cart>> GetAllCartsForUser(int userId)

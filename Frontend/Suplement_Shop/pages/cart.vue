@@ -20,9 +20,7 @@
         <span>Total price: {{ totalPrice }} ден.</span>
       </v-card-text>
       <v-card-actions>
-        <v-btn outlined rounded color="red" @click="clearCart()"
-          >Clear</v-btn
-        >
+        <v-btn outlined rounded color="red" @click="clearCart()">Clear</v-btn>
         <v-btn outlined rounded color="primary" @click="buyCart()">Buy</v-btn>
       </v-card-actions>
     </v-card>

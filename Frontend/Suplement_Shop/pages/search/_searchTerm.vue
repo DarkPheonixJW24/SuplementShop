@@ -18,10 +18,13 @@ import ProductsCard from "@/components/ProductsCard.vue";
 export default {
   name: "Search",
   components: {
-    ProductsCard
+    ProductsCard,
   },
   mounted() {
-    this.$store.dispatch("productsState/searchProducts", this.$route.params.searchTerm);
+    this.$store.dispatch(
+      "productsState/searchProducts",
+      this.$route.params.searchTerm
+    );
   },
   computed: {
     productsState() {
@@ -38,7 +41,7 @@ export default {
     },
     cart() {
       return this.$store.state.cartState.cart;
-    }
+    },
   },
   methods: {
     addToCart(product) {
@@ -49,12 +52,12 @@ export default {
             productId: product.id,
             productName: product.name,
             price: product.price,
-            count: 1
-          }
+            count: 1,
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

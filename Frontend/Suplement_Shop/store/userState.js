@@ -41,7 +41,9 @@ export default {
         .then(r => r.data)
         .then(response => {
           commit("SET_USER", response);
-          dispatch("cartState/loadCart", { root: true });
+          setTimeout(() =>
+            dispatch("cartState/loadCart", '', { root: true }), 0
+          )
           this.$router.push({
             path: "/",
           });

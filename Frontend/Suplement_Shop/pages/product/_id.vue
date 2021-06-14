@@ -12,7 +12,7 @@
           </v-carousel>
         </v-card>
 
-        <v-card class="mt-10 rounded-xl" >
+        <v-card class="mt-10 rounded-xl">
           <v-card-title>
             {{ product.name }}
           </v-card-title>
@@ -20,17 +20,19 @@
             <nuxt-link :to="'/manufacturer/' + product.manufacturer">
               {{ product.manufacturer }}</nuxt-link
             >
-          <Ribbon
-            class="product-ribon"
-            :text="product.price + ' ден.'"
-          ></Ribbon>
+            <Ribbon
+              class="product-ribon"
+              :text="product.price + ' ден.'"
+            ></Ribbon>
           </v-card-subtitle>
           <v-card-text class="product-description">
             {{ product.description }}
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn @click="addToCart(product)" color="primary" rounded>Add to cart</v-btn>
+            <v-btn @click="addToCart(product)" color="primary" rounded
+              >Add to cart</v-btn
+            >
           </v-card-actions>
         </v-card>
       </template>

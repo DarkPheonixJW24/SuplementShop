@@ -69,16 +69,26 @@
                 return Response<Cart>.Error("Product not in stock");
             }
 
-            CartItem cartItem = new CartItem
-            {
-                CartId = cartId,
-                Count = 1,
-                Price = product.Price,
-                ProductId = productId,
-                ProductName = product.Name
-            };
+            CartItem existingCartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
-            await cartItemRepo.CreateCartItem(cartItem);
+            if (existingCartItem != null)
+            {
+                existingCartItem.Count++;
+                await cartItemRepo.UpdateCartItem(existingCartItem);
+            }
+            else
+            {
+                CartItem cartItem = new CartItem
+                {
+                    CartId = cartId,
+                    Count = 1,
+                    Price = product.Price,
+                    ProductId = productId,
+                    ProductName = product.Name
+                };
+
+                await cartItemRepo.CreateCartItem(cartItem);
+            }
 
             cart = await cartRepo.GetCart(userId, cartId);
 
@@ -140,7 +150,7 @@
             return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Response<Cart>> Decrement(int userId, int cartId, int cartItemId)
+        public async Task<Response<Cart>> Decrement(int userId, int cartId, int productId)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
@@ -149,7 +159,7 @@
                 return Response<Cart>.Error("Invalid cart");
             }
 
-            CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
+            CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
 
             if (cartItem == null)
@@ -164,14 +174,14 @@
             }
             else
             {
-                await cartItemRepo.DeleteCartItem(cartItemId);
+                await cartItemRepo.DeleteCartItem(cartItem.Id);
                 cart.CartItems.Remove(cartItem);
             }
 
             return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Response<Cart>> Increment(int userId, int cartId, int cartItemId)
+        public async Task<Response<Cart>> Increment(int userId, int cartId, int productId)
         {
             Cart cart = await cartRepo.GetCartWithProducts(userId, cartId);
 
@@ -180,7 +190,7 @@
                 return Response<Cart>.Error("Invalid cart");
             }
 
-            CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
+            CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
             if (cartItem == null)
             {

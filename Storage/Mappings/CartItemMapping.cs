@@ -18,7 +18,6 @@
             builder.Property(x => x.CartId);
             builder.Property(x => x.ProductId);
 
-            builder.HasOne(x => x.Cart).WithMany(x => x.CartItems).HasForeignKey(x => x.CartId);
             builder.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
         }
     }

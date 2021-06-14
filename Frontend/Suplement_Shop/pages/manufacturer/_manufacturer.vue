@@ -18,10 +18,13 @@ import ProductsCard from "@/components/ProductsCard.vue";
 export default {
   name: "Manufacturer",
   components: {
-    ProductsCard
+    ProductsCard,
   },
   mounted() {
-    this.$store.dispatch("productState/loadProductsByManufacturer", this.$route.params.manufacturer);
+    this.$store.dispatch(
+      "productState/loadProductsByManufacturer",
+      this.$route.params.manufacturer
+    );
   },
   computed: {
     productsState() {
@@ -38,7 +41,7 @@ export default {
     },
     cart() {
       return this.$store.state.cartState.cart;
-    }
+    },
   },
   methods: {
     addToCart(product) {
@@ -49,12 +52,12 @@ export default {
             productId: product.id,
             productName: product.name,
             price: product.price,
-            count: 1
-          }
+            count: 1,
+          },
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

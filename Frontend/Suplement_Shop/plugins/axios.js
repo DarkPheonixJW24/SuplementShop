@@ -1,5 +1,5 @@
-export default function({ $axios, store }) {
+export default function ({ $axios, store }) {
     $axios.onRequest((config) => {
-        config.headers.common['Authorization'] = store.state.userState.token
+        config.headers.common['Authorization'] = `Bearer ${store.state.userState.token}`
     })
 }

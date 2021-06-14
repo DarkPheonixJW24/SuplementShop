@@ -14,7 +14,7 @@
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.CartStatus).IsRequired();
 
-            builder.HasMany(x => x.CartItems).WithOne(x => x.Cart).HasForeignKey(x => x.CartId);
+            builder.HasMany(x => x.CartItems).WithOne().HasForeignKey(x => x.CartId);
             builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
         }
     }
