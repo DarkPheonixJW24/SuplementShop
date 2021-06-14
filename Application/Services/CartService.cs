@@ -1,6 +1,7 @@
 ﻿namespace SuplementShop.Application.Services
 {
     using Stripe;
+    using Stripe.Checkout;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Requests;
@@ -14,17 +15,17 @@
         private readonly ICartRepo cartRepo;
         private readonly ICartItemRepo cartItemRepo;
         private readonly IProductRepo productRepo;
-        private readonly ChargeService chargeService;
+        private readonly SessionService sessionService;
 
         public CartService(ICartRepo cartRepo,
                            ICartItemRepo cartItemRepo,
                            IProductRepo productRepo,
-                           ChargeService chargeService)
+                           SessionService sessionService)
         {
             this.cartRepo = cartRepo;
             this.cartItemRepo = cartItemRepo;
             this.productRepo = productRepo;
-            this.chargeService = chargeService;
+            this.sessionService = sessionService;
         }
 
         public async Task<Response<Cart>> GetOrCreateCartForUser(int userId)
@@ -40,7 +41,7 @@
             {
                 Id = default,
                 CartStatus = CartStatus.Active,
-                ChargeId = default,
+                SessionId = default,
                 UserId = userId
             };
 
@@ -54,7 +55,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart status: {cart.CartStatus}");
             }
 
             Entities.Product product = await productRepo.GetProduct(productId);
@@ -101,7 +102,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart status: {cart.CartStatus}");
             }
 
             if (cart.CartItems.Any(x => x.Count > x.Product.Stock))
@@ -109,22 +110,37 @@
                 return Response<Cart>.Error("Product not in stock");
             }
 
-            ChargeCreateOptions options = new ChargeCreateOptions
+            var options = new SessionCreateOptions
             {
-                Amount = cart.CartItems.Sum(x => x.Price * x.Count),
-                Currency = "mkd",
-                Source = request.Token
+                SuccessUrl = "http://localhost:3000/checkout/ok",
+                CancelUrl = "http://localhost:3000/checkout/cancel",
+                PaymentMethodTypes = new List<string>
+                {
+                    "card",
+                },
+                LineItems = cart.CartItems.Select(ci => new SessionLineItemOptions
+                {
+                    PriceData =
+                    new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "mkd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = ci.ProductName,
+                            Images = ci.Product.ImageUrls
+                        },
+                        UnitAmount = ci.Product.Price,
+                    },
+                    Quantity = ci.Count
+
+                }).ToList(),
+                Mode = "payment"
             };
 
-            Charge charge = chargeService.Create(options);
+            var service = await sessionService.CreateAsync(options);
 
-            if (charge.Status != "succeeded")
-            {
-                return Response<Cart>.Error("Payment failed");
-            }
-
-            cart.CartStatus = CartStatus.Bought;
-            cart.ChargeId = charge.Id;
+            cart.CartStatus = CartStatus.Processing;
+            cart.SessionId = service.Id;
 
             await cartRepo.UpdateCart(cart);
 
@@ -234,19 +250,19 @@
             return Response<Cart>.Ok(cart);
         }
 
-        public async Task<Response<Charge>> TestCharge()
+        public Task<Response<Charge>> TestCharge()
         {
-            ChargeCreateOptions options = new ChargeCreateOptions
-            {
-                Amount = 100,
-                Currency = "mkd",
-                Source = "tok_visa", // This is the user token
-                ReceiptEmail = "hello_dotnet@example.com",
-            };
+            //ChargeCreateOptions options = new ChargeCreateOptions
+            //{
+            //    Amount = 100,
+            //    Currency = "mkd",
+            //    Source = "tok_visa", // This is the user token
+            //    ReceiptEmail = "hello_dotnet@example.com",
+            //};
 
-            Charge charge = await chargeService.CreateAsync(options);
+            //Charge charge = await chargeService.CreateAsync(options);
 
-            return Response<Charge>.Ok(charge);
+            return Task.FromResult(Response<Charge>.Error("Idk"));
         }
     }
 }

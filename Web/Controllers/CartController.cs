@@ -41,7 +41,7 @@
                 return Unauthorized("Not logged in");
             }
 
-            var result = await cartService.Buy(userId.Value, request);
+            Application.Responses.Response<Application.Entities.Cart> result = await cartService.Buy(userId.Value, request);
             return this.ToResult(result);
         }
 

@@ -10,6 +10,7 @@ namespace SuplementShop.Web
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
     using Stripe;
+    using Stripe.Checkout;
     using SuplementShop.Application.Interfaces;
     using SuplementShop.Application.Services;
     using SuplementShop.Persistence;
@@ -58,7 +59,8 @@ namespace SuplementShop.Web
 
             StripeConfiguration.ApiKey = Configuration["Stripe:SKey"];
 
-            services.AddScoped<ChargeService>(builder => new());
+            //services.AddScoped<ChargeService>(builder => new());
+            services.AddScoped<SessionService>(builder => new());
 
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IProductRepo, ProductRepo>();

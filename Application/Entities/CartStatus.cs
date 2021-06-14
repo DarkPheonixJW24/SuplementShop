@@ -2,6 +2,6 @@
 {
     public enum CartStatus
     {
-        Active, Bought, DIscarded
+        Active, Bought, Discarded, Processing
     }
 }

@@ -13,6 +13,7 @@
             builder.HasKey(x => x.Id);
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.CartStatus).IsRequired();
+            builder.Property(x => x.SessionId);
 
             builder.HasMany(x => x.CartItems).WithOne().HasForeignKey(x => x.CartId);
             builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);

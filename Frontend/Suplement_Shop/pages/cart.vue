@@ -24,14 +24,29 @@
         <v-btn outlined rounded color="primary" @click="buyCart()">Buy</v-btn>
       </v-card-actions>
     </v-card>
+    <stripe-checkout
+      ref="checkoutRef"
+      :pk="publishableKey"
+      :session-id="sessionId"
+    />
   </v-container>
 </template>
 
 <script>
 import CartItem from "@/components/CartItem.vue";
+import { StripeCheckout } from "@vue-stripe/vue-stripe";
+
 export default {
   components: {
     CartItem,
+    StripeCheckout,
+  },
+  data() {
+    return {
+      publishableKey:
+        "pk_test_51IkvviLTOkIxXYKR5UyelTdSRz7u8VXLPKZe8LZQikQ28trVar9REM3YWZa6QShZd5935Ctv2KtX1Hwys1ECV6Lx00eCPBa63h",
+      sessionId: "",
+    };
   },
   computed: {
     cartState() {
@@ -44,15 +59,14 @@ export default {
       return this.cart ? this.cart.cartItems : [];
     },
     hasItems() {
-      return this.cartItems.length;
+      return this.cartItems?.length ?? false;
     },
     totalPrice() {
-      return this.cartItems
-        .map((item) => item.price * item.count)
-        .reduce((a, b) => a + b, 0);
-    },
-    user() {
-      return this.$store.state.userState.user;
+      return (
+        this.cartItems
+          ?.map((item) => item.price * item.count)
+          ?.reduce((a, b) => a + b, 0) ?? 0
+      );
     },
   },
   methods: {
@@ -61,10 +75,18 @@ export default {
         this.$store.dispatch("cartState/clearCart", { cartId: this.cart.id });
     },
     buyCart() {
-      if (this.user && this.cart)
-        this.$store.dispatch("cartState/buyCart", {
-          cartId: this.cart.id,
-        });
+      if (this.cart) {
+        this.$axios
+          .post(`cart/buy/${this.cart.id}`, { cartId: this.cart.id })
+          .then((r) => r.data)
+          .then(
+            (cart) => {
+              this.sessionId = cart.sessionId;
+              this.$refs.checkoutRef.redirectToCheckout();
+            },
+            (err) => console.error("Payment failed", err)
+          );
+      }
     },
     incrementCartItem(productId) {
       if (this.cart) {
