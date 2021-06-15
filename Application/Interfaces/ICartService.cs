@@ -1,6 +1,5 @@
 ﻿namespace SuplementShop.Application.Interfaces
 {
-    using Stripe;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Requests;
     using SuplementShop.Application.Responses;
@@ -17,6 +16,6 @@
         Task<Response<Cart>> Increment(int userId, int cartId, int productId);
         Task<Response<IEnumerable<Cart>>> ListCartsForUser(int userId);
         Task<Response<Cart>> RemoveCartItem(int userId, int cartId, int cartItemId);
-        Task<Response<Charge>> TestCharge();
+        Task UpdateCartStatus(int value);
     }
 }

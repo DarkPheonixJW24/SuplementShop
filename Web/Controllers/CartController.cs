@@ -122,15 +122,11 @@
             {
                 return Unauthorized("Not logged in");
             }
+            
+            await cartService.UpdateCartStatus(userId.Value);
 
             var result = await cartService.ListCartsForUser(userId.Value);
-            return this.ToResult(result);
-        }
-
-        [HttpGet("ice_me")]
-        public async Task<IActionResult> IceIceBaby()
-        {
-            var result = await cartService.TestCharge();
+            
             return this.ToResult(result);
         }
     }

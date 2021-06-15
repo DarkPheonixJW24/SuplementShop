@@ -5,6 +5,7 @@
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class CartRepo : ICartRepo
@@ -68,6 +69,11 @@
 
                 await context.SaveChangesAsync();
             }
+        }
+
+        public Task<List<Cart>> GetProcessingCartsForUser(int userId)
+        {
+            return Cart.Include(x => x.CartItems).Where(x => x.CartStatus == CartStatus.Processing).ToListAsync();
         }
     }
 }

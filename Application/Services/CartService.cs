@@ -1,6 +1,5 @@
 ﻿namespace SuplementShop.Application.Services
 {
-    using Stripe;
     using Stripe.Checkout;
     using SuplementShop.Application.Entities;
     using SuplementShop.Application.Interfaces;
@@ -250,19 +249,21 @@
             return Response<Cart>.Ok(cart);
         }
 
-        public Task<Response<Charge>> TestCharge()
+        public async Task UpdateCartStatus(int userId)
         {
-            //ChargeCreateOptions options = new ChargeCreateOptions
-            //{
-            //    Amount = 100,
-            //    Currency = "mkd",
-            //    Source = "tok_visa", // This is the user token
-            //    ReceiptEmail = "hello_dotnet@example.com",
-            //};
+            List<Cart> response = await cartRepo.GetProcessingCartsForUser(userId);
 
-            //Charge charge = await chargeService.CreateAsync(options);
+            foreach (var cart in response)
+            {
+                var session = await sessionService.GetAsync(cart.SessionId);
 
-            return Task.FromResult(Response<Charge>.Error("Idk"));
+                if (session.PaymentStatus == "paid")
+                {
+                    cart.CartStatus = CartStatus.Bought;
+
+                    await cartRepo.UpdateCart(cart);
+                }
+            }
         }
     }
 }

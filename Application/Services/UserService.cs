@@ -69,7 +69,7 @@
             JwtSecurityToken token = new JwtSecurityToken(Config["Jwt:Issuer"],
               Config["Jwt:Issuer"],
               claims,
-              expires: DateTime.Now.AddMinutes(120),
+              expires: DateTime.Now.AddYears(120),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

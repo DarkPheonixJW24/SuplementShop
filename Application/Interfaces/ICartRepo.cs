@@ -19,5 +19,7 @@
         Task UpdateCart(Cart cart);
 
         Task DeleteCart(int userId, int cartId);
+        
+        Task<List<Cart>> GetProcessingCartsForUser(int userId);
     }
 }
