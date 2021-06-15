@@ -129,7 +129,7 @@
                             Name = ci.ProductName,
                             Images = ci.Product.ImageUrls
                         },
-                        UnitAmount = ci.Product.Price,
+                        UnitAmountDecimal = ci.Product.Price * 100,
                     },
                     Quantity = ci.Count
 
@@ -153,7 +153,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart: {cart.CartStatus}");
             }
 
             foreach (CartItem item in cart.CartItems)
@@ -172,7 +172,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart: {cart.CartStatus}");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
@@ -203,7 +203,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart: {cart.CartStatus}");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
@@ -233,7 +233,7 @@
 
             if (cart.CartStatus != CartStatus.Active)
             {
-                return Response<Cart>.Error("Invalid cart");
+                return Response<Cart>.Error($"Invalid cart: {cart.CartStatus}");
             }
 
             CartItem cartItem = cart.CartItems.FirstOrDefault(x => x.Id == cartItemId);
