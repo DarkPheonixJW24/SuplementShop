@@ -4,9 +4,9 @@ SuplementShop
 - Step 1 Authorization [Done]
 - Step 2 Products [Done]
 - Step 3 Frontend for ^ [Done]
-- Step 4 Cart []
+- Step 4 Cart [Done]
 - Step 5 Frontend for ^ [Done]
-- Step 6 Payment procesing []
+- Step 6 Payment procesing [Done]
 - Step 7 Elastic search []
 
 ## Cart logic
