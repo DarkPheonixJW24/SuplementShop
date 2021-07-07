@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="5" class="rounded-xl" :to="'category/' + title">
-    <v-img :src="image" class="rounded-xl" :to="'category/' + title"/>
+    <v-img :src="image" class="rounded-xl" :to="'category/' + title" max-height="300"/>
     <Ribbon class="category-ribbon" :text="title"></Ribbon>
   </v-card>
 </template>

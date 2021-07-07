@@ -1,6 +1,6 @@
 <template>
   <v-card class="rounded-xl"> 
-    <v-img :src="product.imageUrls[0]" />
+    <v-img :src="product.imageUrls[0]" max-height="500" />
     <Ribbon class="product-ribon" :text="product.price + ' ден.'"></Ribbon>
     <v-card-title>{{product.name}}</v-card-title>
     <v-card-actions>

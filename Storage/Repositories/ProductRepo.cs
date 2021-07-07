@@ -77,12 +77,80 @@
                 Products.AddOrUpdate(new Product
                 {
                     Id = i,
-                    CategoryId = i % 2 + 1,
-                    Description = $"Product {i}",
+                    CategoryId = 1,
+                    Description = $"Whey {i}",
                     ImageUrls = new List<string>() {
-                        "https://missouribusinessalert.com/wp-content/uploads/2015/05/three-ice-cubes.jpg"
+                        "https://gymbeam.com/media/catalog/product/cache/926507dc7f93631a094422215b778fe0/g/o/gold_titulna.png"
                     },
-                    Name = $"Product {i}",
+                    Name = $"Whey {i}",
+                    Price = 100 + i * 25,
+                    Stock = 10,
+                    Manufacturer = "Manufacturer"
+                });
+            }
+
+            for (int i = 1; i < 60; i++)
+            {
+                Products.AddOrUpdate(new Product
+                {
+                    Id = i+59,
+                    CategoryId = 2,
+                    Description = $"Gorilla Mind Rush {i}",
+                    ImageUrls = new List<string>() {
+                        "https://secec.org/wp-content/uploads/2019/11/Gorilla-Mind-Rush-Review.png"
+                    },
+                    Name = $"Gorilla Mind Rush {i}",
+                    Price = 100 + i * 25,
+                    Stock = 10,
+                    Manufacturer = "Manufacturer"
+                });
+            }
+
+            for (int i = 1; i < 60; i++)
+            {
+                Products.AddOrUpdate(new Product
+                {
+                    Id = i + (59 *2),
+                    CategoryId = 3,
+                    Description = $"One Protein {i}",
+                    ImageUrls = new List<string>() {
+                        "https://www.yamamotonutrition.com/imgp/big/a31498.jpg"
+                    },
+                    Name = $"One Protein {i}",
+                    Price = 100 + i * 25,
+                    Stock = 10,
+                    Manufacturer = "Manufacturer"
+                });
+            }
+
+            for (int i = 1; i < 60; i++)
+            {
+                Products.AddOrUpdate(new Product
+                {
+                    Id = i + (59 * 3),
+                    CategoryId = 4,
+                    Description = $"Mutant Mass {i}",
+                    ImageUrls = new List<string>() {
+                        "https://gymbeam.com/media/catalog/product/cache/926507dc7f93631a094422215b778fe0/m/u/mutant_mass_2270.jpg"
+                    },
+                    Name = $"Mutant Mass {i}",
+                    Price = 100 + i * 25,
+                    Stock = 10,
+                    Manufacturer = "Manufacturer"
+                });
+            }
+
+            for (int i = 1; i < 60; i++)
+            {
+                Products.AddOrUpdate(new Product
+                {
+                    Id = i + (59 * 4),
+                    CategoryId = 5,
+                    Description = $"Keto {i}",
+                    ImageUrls = new List<string>() {
+                        "https://images-na.ssl-images-amazon.com/images/I/71gWzXYET4L._AC_SL1500_.jpg"
+                    },
+                    Name = $"Keto {i}",
                     Price = 100 + i * 25,
                     Stock = 10,
                     Manufacturer = "Manufacturer"

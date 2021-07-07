@@ -39,6 +39,16 @@
             <v-list-item-title>Cart</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item to="/cart-history" link v-if="loggedIn">
+          <v-list-item-icon>
+            <v-icon>mdi-currency-usd-off</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Cart history</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
 
       <template v-slot:append>
@@ -69,7 +79,7 @@ export default {
         {
           to: "/about",
           title: "About",
-          icon: "mdi-info",
+          icon: "mdi-dumbbell",
         },
         {
           to: "/catalog",
