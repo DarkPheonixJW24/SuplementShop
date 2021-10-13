@@ -7,7 +7,7 @@ SuplementShop
 - Step 4 Cart [Done]
 - Step 5 Frontend for ^ [Done]
 - Step 6 Payment procesing [Done]
-- Step 7 Elastic search []
+- Step 7 Elastic search [Done]
 
 ## Cart logic
 Cart
